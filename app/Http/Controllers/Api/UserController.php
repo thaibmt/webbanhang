@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\API\BaseController as BaseController;
+use App\Http\Controllers\Api\BaseController as BaseController;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -89,5 +89,19 @@ class UserController extends BaseController
         ]);
 
         return $this->sendResponse([], 'User deleted successfully.');
+    }
+
+    /**
+     * Search resource from storage.
+     *
+     * @param  Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $s = $request->s;
+        $users = User::where('name', 'LIKE', "%$s%")->get();
+
+        return $this->sendResponse(UserResource::collection($users), 'User search successfully.');
     }
 }

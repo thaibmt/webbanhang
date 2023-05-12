@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\BaseController as BaseController;
-use App\Http\Resources\ProductResource;
-use App\Models\Product;
+use App\Http\Resources\CategoryResource;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Validator;
 
-class ProductController extends BaseController
+class CategoryController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +17,8 @@ class ProductController extends BaseController
      */
     public function index()
     {
-        $products = Product::all();
-        return $this->sendResponse(ProductResource::collection($products), 'Products retrieved successfully.');
+        $categories = Category::all();
+        return $this->sendResponse(CategoryResource::collection($categories), 'Categories retrieved successfully.');
     }
 
     /**
@@ -32,12 +32,7 @@ class ProductController extends BaseController
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'title' => 'required',
-            'category_id' => 'required',
-            'price' => 'required',
-            'discount' => 'required',
-            'thumbnail' => 'required',
-            'description' => 'required',
+            'name' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -46,11 +41,11 @@ class ProductController extends BaseController
 
         $input = [
             ...$request->all(),
-            'slug' => getSlug($request->title),
+            'href_param' => getSlug($request->title),
         ];
-        $product = Product::create($input);
+        $category = Category::create($input);
 
-        return $this->sendResponse(new ProductResource($product), 'Product created successfully.');
+        return $this->sendResponse(new CategoryResource($category), 'Category created successfully.');
     }
 
     /**
@@ -61,12 +56,12 @@ class ProductController extends BaseController
      */
     public function show($id)
     {
-        $product = Product::find($id);
-        if (is_null($product)) {
-            return $this->sendError('Product not found.');
+        $category = Category::find($id);
+        if (is_null($category)) {
+            return $this->sendError('Category not found.');
         }
 
-        return $this->sendResponse(new ProductResource($product), 'Product retrieved successfully.');
+        return $this->sendResponse(new CategoryResource($category), 'Category retrieved successfully.');
     }
 
     /**
@@ -78,15 +73,15 @@ class ProductController extends BaseController
      */
     public function update(Request $request, $id)
     {
-        $product = Product::find($id);
+        $category = Category::find($id);
 
-        if (is_null($product)) {
-            return $this->sendError('Product not found.');
+        if (is_null($category)) {
+            return $this->sendError('Category not found.');
         }
 
-        $product->update($request->all());
+        $category->update($request->all());
 
-        return $this->sendResponse(new ProductResource($product), 'Product updated successfully.');
+        return $this->sendResponse(new CategoryResource($category), 'Category updated successfully.');
     }
 
     /**
@@ -97,17 +92,15 @@ class ProductController extends BaseController
      */
     public function destroy($id)
     {
-        $product = Product::find($id);
+        $category = Category::find($id);
 
-        if (is_null($product)) {
-            return $this->sendError('Product not found.');
+        if (is_null($category)) {
+            return $this->sendError('Category not found.');
         }
 
-        $product->update([
-            'deleted' => true,
-        ]);
+        $category->delete();
 
-        return $this->sendResponse([], 'Product deleted successfully.');
+        return $this->sendResponse([], 'Category deleted successfully.');
     }
 
     /**
@@ -119,8 +112,9 @@ class ProductController extends BaseController
     public function search(Request $request)
     {
         $s = $request->s;
-        $products = Product::where('title', 'LIKE', "%$s%")->get();
+        $categories = Category::where('name', 'LIKE', "%$s%")->get();
 
-        return $this->sendResponse(ProductResource::collection($products), 'Product search successfully.');
+        return $this->sendResponse(CategoryResource::collection($categories), 'Category search successfully.');
     }
+
 }
