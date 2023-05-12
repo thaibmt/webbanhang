@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\API\AuthController;
-use App\Http\Controllers\API\ProductController;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,5 +27,15 @@ Route::controller(AuthController::class)->group(function () {
 });
 /* Products */
 Route::middleware('auth:sanctum')->group(function () {
+    // product
+    Route::controller(ProductController::class)->prefix('products')->group(function () {
+        Route::post('/search', 'search');
+    });
     Route::apiResource('products', ProductController::class);
+    // user
+    // Route::controller(UserController::class)->prefix('products')->group(function () {
+    //     Route::get('/search', 'search');
+    // });
+    Route::apiResource('users', UserController::class);
+
 });
