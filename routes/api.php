@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\Frontend\OrderController as UserOrderController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\StatisticalController;
@@ -28,8 +30,8 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('register', 'register');
     Route::post('login', 'login');
 });
-/* Products */
-Route::middleware('auth:sanctum')->group(function () {
+/* Amin - Backend */
+Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
     // user
     Route::controller(UserController::class)->prefix('users')->group(function () {
         Route::get('/search', 'search');
@@ -54,4 +56,17 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/total-product', 'totalProduct');
         route::get('order/{status}', 'getOrder'); // o:new, 1: approved, 2: cancelled
     });
+    // order
+    Route::controller(OrderController::class)->prefix('orders')->group(function () {
+        Route::get('/search', 'search');
+    });
+    Route::apiResource('orders', OrderController::class);
+});
+
+// User - Frontend
+Route::prefix('user')->group(function () {
+    // product
+    Route::apiResource('products', ProductController::class);
+    // order
+    Route::apiResource('orders', UserOrderController::class);
 });
