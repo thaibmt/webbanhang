@@ -1,15 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Frontend;
 
 use App\Http\Controllers\Api\BaseController as BaseController;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Validator;
 
 class ProductController extends BaseController
 {
+    protected $product;
+    public function __construct()
+    {
+        $this->product = Product::whereDeleted(false);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +21,7 @@ class ProductController extends BaseController
      */
     public function index()
     {
-        $products = Product::all();
+        $products = $this->product->paginate(10);
         return $this->sendResponse(ProductResource::collection($products), 'Products retrieved successfully.');
     }
 
@@ -29,28 +33,7 @@ class ProductController extends BaseController
      */
     public function store(Request $request)
     {
-        $input = $request->all();
-
-        $validator = Validator::make($input, [
-            'title' => 'required|max:250',
-            'category_id' => 'required|integer',
-            'price' => 'required|integer',
-            'discount' => 'required|integer',
-            'thumbnail' => 'required|max:500',
-            'description' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
-        }
-
-        $input = [
-            ...$request->all(),
-            'slug' => getSlug($request->title),
-        ];
-        $product = Product::create($input);
-
-        return $this->sendResponse(new ProductResource($product), 'Product created successfully.');
+        //
     }
 
     /**
@@ -59,9 +42,9 @@ class ProductController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        $product = Product::find($id);
+        $product = $this->product->whereSlug($slug)->first();
         if (is_null($product)) {
             return $this->sendError('Product not found.');
         }
@@ -78,15 +61,7 @@ class ProductController extends BaseController
      */
     public function update(Request $request, $id)
     {
-        $product = Product::find($id);
-
-        if (is_null($product)) {
-            return $this->sendError('Product not found.');
-        }
-
-        $product->update($request->all());
-
-        return $this->sendResponse(new ProductResource($product), 'Product updated successfully.');
+        //
     }
 
     /**
@@ -97,16 +72,7 @@ class ProductController extends BaseController
      */
     public function destroy($id)
     {
-        $product = Product::find($id);
-
-        if (is_null($product)) {
-            return $this->sendError('Product not found.');
-        }
-
-        $product->deleted = true;
-        $product->save();
-
-        return $this->sendResponse([], 'Product deleted successfully.');
+        //
     }
 
     /**
@@ -118,7 +84,7 @@ class ProductController extends BaseController
     public function search(Request $request)
     {
         $s = $request->s;
-        $products = Product::where('title', 'LIKE', "%$s%")->get();
+        $products = $this->product->where('title', 'LIKE', "%$s%")->get();
 
         return $this->sendResponse(ProductResource::collection($products), 'Product search successfully.');
     }

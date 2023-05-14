@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Feedback;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use DB;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
 
-class FeedbackController extends Controller {
+class FeedbackController extends Controller
+{
     /**
      * Create a new controller instance.
      *
@@ -18,8 +18,9 @@ class FeedbackController extends Controller {
         $this->middleware('auth');
         $this->middleware('checkPermission');
     }
-    
-    public function index(Request $request) {
+
+    public function index(Request $request)
+    {
         $dataList = DB::table('feedback')
             ->orderBy('status', 'asc')
             ->orderBy('updated_at', 'desc')
@@ -27,22 +28,24 @@ class FeedbackController extends Controller {
 
         return view('feedback.index')->with([
             'index' => 0,
-            'dataList' => $dataList
+            'dataList' => $dataList,
         ]);
     }
 
-    public function update(Request $request) {
+    public function update(Request $request)
+    {
         $id = $request->id;
 
         DB::table('feedback')
             ->where('id', $id)
             ->update([
                 'status' => 1,
-                'updated_at' => date('Y-m-d H:i:s')
+                'updated_at' => date('Y-m-d H:i:s'),
             ]);
     }
 
-    public function delete(Request $request) {
+    public function delete(Request $request)
+    {
         $id = $request->id;
 
         DB::table('feedback')

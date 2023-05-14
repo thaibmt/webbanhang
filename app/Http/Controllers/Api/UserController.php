@@ -84,9 +84,8 @@ class UserController extends BaseController
             return $this->sendError('User not found.');
         }
 
-        $user->update([
-            'deleted' => true,
-        ]);
+        $user->deleted = true;
+        $user->save();
 
         return $this->sendResponse([], 'User deleted successfully.');
     }

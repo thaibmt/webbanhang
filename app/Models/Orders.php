@@ -22,6 +22,6 @@ class Orders extends Model
         'note',
         'order_date',
         'status',
-        'total_money'
+        'total_money',
     ];
 }

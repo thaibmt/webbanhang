@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\BaseController as BaseController;
-use App\Http\Resources\PostResource;
-use App\Models\Post;
+use App\Http\Resources\RoleResource;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Validator;
 
-class PostController extends BaseController
+class RoleController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +17,8 @@ class PostController extends BaseController
      */
     public function index()
     {
-        $posts = Post::all();
-        return $this->sendResponse(PostResource::collection($posts), 'Posts retrieved successfully.');
+        $roles = Role::all();
+        return $this->sendResponse(RoleResource::collection($roles), 'Roles retrieved successfully.');
     }
 
     /**
@@ -32,9 +32,7 @@ class PostController extends BaseController
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'title' => 'required|max:250',
-            'content' => 'required',
-            'thumbnail' => 'required|max:500',
+            'name' => 'required|20',
         ]);
 
         if ($validator->fails()) {
@@ -43,11 +41,10 @@ class PostController extends BaseController
 
         $input = [
             ...$request->all(),
-            'href_param' => getSlug($request->title),
         ];
-        $post = Post::create($input);
+        $role = Role::create($input);
 
-        return $this->sendResponse(new PostResource($post), 'Post created successfully.');
+        return $this->sendResponse(new RoleResource($role), 'Role created successfully.');
     }
 
     /**
@@ -58,12 +55,12 @@ class PostController extends BaseController
      */
     public function show($id)
     {
-        $post = Post::find($id);
-        if (is_null($post)) {
-            return $this->sendError('Post not found.');
+        $role = Role::find($id);
+        if (is_null($role)) {
+            return $this->sendError('Role not found.');
         }
 
-        return $this->sendResponse(new PostResource($post), 'Post retrieved successfully.');
+        return $this->sendResponse(new RoleResource($role), 'Role retrieved successfully.');
     }
 
     /**
@@ -75,15 +72,15 @@ class PostController extends BaseController
      */
     public function update(Request $request, $id)
     {
-        $post = Post::find($id);
+        $role = Role::find($id);
 
-        if (is_null($post)) {
-            return $this->sendError('Post not found.');
+        if (is_null($role)) {
+            return $this->sendError('Role not found.');
         }
 
-        $post->update($request->all());
+        $role->update($request->all());
 
-        return $this->sendResponse(new PostResource($post), 'Post updated successfully.');
+        return $this->sendResponse(new RoleResource($role), 'Role updated successfully.');
     }
 
     /**
@@ -94,15 +91,14 @@ class PostController extends BaseController
      */
     public function destroy($id)
     {
-        $post = Post::find($id);
+        $role = Role::find($id);
 
-        if (is_null($post)) {
-            return $this->sendError('Post not found.');
+        if (is_null($role)) {
+            return $this->sendError('Role not found.');
         }
 
-        $post->deleted = true;
-        $post->save();
+        $role->deleted();
 
-        return $this->sendResponse([], 'Post deleted successfully.');
+        return $this->sendResponse([], 'Role deleted successfully.');
     }
 }

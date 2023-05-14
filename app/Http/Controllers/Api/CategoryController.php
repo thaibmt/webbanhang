@@ -32,7 +32,7 @@ class CategoryController extends BaseController
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'name' => 'required',
+            'name' => 'required|max:100',
         ]);
 
         if ($validator->fails()) {
@@ -41,7 +41,7 @@ class CategoryController extends BaseController
 
         $input = [
             ...$request->all(),
-            'href_param' => getSlug($request->title),
+            'href_param' => getSlug($request->name),
         ];
         $category = Category::create($input);
 

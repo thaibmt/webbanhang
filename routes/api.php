@@ -2,10 +2,14 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\FeedbackController;
 use App\Http\Controllers\Api\Frontend\OrderController as UserOrderController;
+use App\Http\Controllers\Api\Frontend\PostController as UserPostController;
+use App\Http\Controllers\Api\Frontend\ProductController as UserProductController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\StatisticalController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
@@ -61,12 +65,18 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
         Route::get('/search', 'search');
     });
     Route::apiResource('orders', OrderController::class);
+    // role
+    Route::apiResource('roles', RoleController::class);
+    // feedback
+    Route::apiResource('feedbacks', FeedbackController::class);
 });
 
 // User - Frontend
 Route::prefix('user')->group(function () {
     // product
-    Route::apiResource('products', ProductController::class);
+    Route::apiResource('products', UserProductController::class);
+    // product
+    Route::apiResource('posts', UserPostController::class);
     // order
     Route::apiResource('orders', UserOrderController::class);
 });

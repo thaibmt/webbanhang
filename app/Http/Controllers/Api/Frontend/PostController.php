@@ -1,15 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Frontend;
 
 use App\Http\Controllers\Api\BaseController as BaseController;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
-use Validator;
 
 class PostController extends BaseController
 {
+    protected $post;
+    public function __construct()
+    {
+        $this->post = Post::whereDeleted(false);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +21,7 @@ class PostController extends BaseController
      */
     public function index()
     {
-        $posts = Post::all();
+        $posts = $this->post->paginate(10);
         return $this->sendResponse(PostResource::collection($posts), 'Posts retrieved successfully.');
     }
 
@@ -29,25 +33,7 @@ class PostController extends BaseController
      */
     public function store(Request $request)
     {
-        $input = $request->all();
-
-        $validator = Validator::make($input, [
-            'title' => 'required|max:250',
-            'content' => 'required',
-            'thumbnail' => 'required|max:500',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
-        }
-
-        $input = [
-            ...$request->all(),
-            'href_param' => getSlug($request->title),
-        ];
-        $post = Post::create($input);
-
-        return $this->sendResponse(new PostResource($post), 'Post created successfully.');
+        //
     }
 
     /**
@@ -56,9 +42,9 @@ class PostController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        $post = Post::find($id);
+        $post = $this->post->whereHrefParam($slug)->first();
         if (is_null($post)) {
             return $this->sendError('Post not found.');
         }
@@ -75,15 +61,7 @@ class PostController extends BaseController
      */
     public function update(Request $request, $id)
     {
-        $post = Post::find($id);
-
-        if (is_null($post)) {
-            return $this->sendError('Post not found.');
-        }
-
-        $post->update($request->all());
-
-        return $this->sendResponse(new PostResource($post), 'Post updated successfully.');
+        //
     }
 
     /**
@@ -94,15 +72,20 @@ class PostController extends BaseController
      */
     public function destroy($id)
     {
-        $post = Post::find($id);
+        //
+    }
 
-        if (is_null($post)) {
-            return $this->sendError('Post not found.');
-        }
+    /**
+     * Search resource from storage.
+     *
+     * @param  Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $s = $request->s;
+        $posts = $this->post->where('title', 'LIKE', "%$s%")->get();
 
-        $post->deleted = true;
-        $post->save();
-
-        return $this->sendResponse([], 'Post deleted successfully.');
+        return $this->sendResponse(PostResource::collection($posts), 'Post search successfully.');
     }
 }
