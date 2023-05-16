@@ -54,14 +54,16 @@
                     <!-- ============================================================== -->
                     <!-- Logo -->
                     <!-- ============================================================== -->
-                    <a class="navbar-brand" href="index.html">
+                    <a class="navbar-brand" href="{{ route('home_index') }}">
                         <!-- Logo icon -->
                         <b class="logo-icon">
                             <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                             <!-- Dark Logo icon -->
-                            <img src="https://gokisoft.com/uploads/2021/03/s-568-ico-web.jpg" alt="homepage" class="dark-logo" style="max-height: 40px;" />
+                            <img src="https://gokisoft.com/uploads/2021/03/s-568-ico-web.jpg" alt="homepage"
+                                class="dark-logo" style="max-height: 40px;" />
                             <!-- Light Logo icon -->
-                            <img src="https://gokisoft.com/uploads/2021/03/s-568-ico-web.jpg" alt="homepage" class="light-logo" style="max-height: 40px;" />
+                            <img src="https://gokisoft.com/uploads/2021/03/s-568-ico-web.jpg" alt="homepage"
+                                class="light-logo" style="max-height: 40px;" />
                         </b>
                         <!--End Logo icon -->
                         <!-- Logo text -->
@@ -88,10 +90,12 @@
                         <!-- Search -->
                         <!-- ============================================================== -->
                         <li class="nav-item search-box"> <a class="nav-link waves-effect waves-dark"
-                                href="javascript:void(0)"><i class="mdi mdi-magnify me-1"></i> <span class="font-16">Search</span></a>
-                            <form class="app-search position-absolute" action="{{route('order.search')}}"  >
-                                <input type="text" name="s" id="search" class="form-control" placeholder="Search &amp; enter"> <a
-                                    class="srh-btn"><i class="mdi mdi-window-close"></i></a>
+                                href="javascript:void(0)"><i class="mdi mdi-magnify me-1"></i> <span
+                                    class="font-16">Search</span></a>
+                            <form class="app-search position-absolute" action="{{ route('order.search') }}">
+                                <input type="text" name="s" id="search" class="form-control"
+                                    placeholder="Search &amp; enter"> <a class="srh-btn"><i
+                                        class="mdi mdi-window-close"></i></a>
                             </form>
                         </li>
                     </ul>
@@ -103,15 +107,20 @@
                         <!-- User profile and search -->
                         <!-- ============================================================== -->
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="https://gokisoft.com/uploads/2021/03/s-568-ico-web.jpg" alt="user" class="rounded-circle" width="31">
+                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic"
+                                href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <img src="https://gokisoft.com/uploads/2021/03/s-568-ico-web.jpg" alt="user"
+                                    class="rounded-circle" width="31">
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end user-dd animated" aria-labelledby="navbarDropdown">
+                            <ul class="dropdown-menu dropdown-menu-end user-dd animated"
+                                aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="javascript:void(0)"><i class="ti-user m-r-5 m-l-5"></i>
                                     Thông tin tài khoản</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();"><i class="mdi mdi-logout m-r-5 m-l-5"></i>
+                                    onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();"><i
+                                        class="mdi mdi-logout m-r-5 m-l-5"></i>
                                     Thoát</a>
                             </ul>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -144,23 +153,28 @@
                                 href="{{ route('category.index') }}" aria-expanded="false"><i
                                     class="mdi mdi-folder"></i><span class="hide-menu">Quản Lý Danh Mục</span></a></li>
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                                href="{{ route('product.index') }}" aria-expanded="false"><i class="mdi mdi-cloud-check"></i><span
-                                    class="hide-menu">Quản Lý Sản Phẩm</span></a></li>
+                                href="{{ route('product.index') }}" aria-expanded="false"><i
+                                    class="mdi mdi-cloud-check"></i><span class="hide-menu">Quản Lý Sản
+                                    Phẩm</span></a></li>
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                                href="{{ route('order.index') }}" aria-expanded="false"><i class="mdi mdi-cart"></i><span
-                                    class="hide-menu">Quản Lý Đơn Hàng</span></a></li>
+                                href="{{ route('order.index') }}" aria-expanded="false"><i
+                                    class="mdi mdi-cart"></i><span class="hide-menu">Quản Lý Đơn Hàng</span></a></li>
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                                href="{{ route('news.index') }}" aria-expanded="false"><i class="mdi mdi-newspaper"></i><span
-                                    class="hide-menu">Quản Lý Tin Tức</span></a></li>
+                                href="{{ route('news.index') }}" aria-expanded="false"><i
+                                    class="mdi mdi-newspaper"></i><span class="hide-menu">Quản Lý Tin Tức</span></a>
+                        </li>
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                                href="{{ route('feedback.index') }}" aria-expanded="false"><i class="mdi mdi-comment"></i><span
-                                    class="hide-menu">Quản Lý Phản Hồi</span></a></li>
+                                href="{{ route('feedback.index') }}" aria-expanded="false"><i
+                                    class="mdi mdi-comment"></i><span class="hide-menu">Quản Lý Phản Hồi</span></a>
+                        </li>
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                                href="{{ route('user.index') }}" aria-expanded="false"><i class="mdi mdi-account-multiple"></i><span
-                                    class="hide-menu">Quản Lý Người Dùng</span></a></li>
+                                href="{{ route('user.index') }}" aria-expanded="false"><i
+                                    class="mdi mdi-account-multiple"></i><span class="hide-menu">Quản Lý Người
+                                    Dùng</span></a></li>
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                                href="{{ route('role.index') }}" aria-expanded="false"><i class="mdi mdi-account-key"></i><span
-                                    class="hide-menu">Quản Lý Role</span></a></li>
+                                href="{{ route('role.index') }}" aria-expanded="false"><i
+                                    class="mdi mdi-account-key"></i><span class="hide-menu">Quản Lý Role</span></a>
+                        </li>
                     </ul>
 
                 </nav>
@@ -183,11 +197,12 @@
                     <div class="col-12">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0 d-flex align-items-center">
-                              <li class="breadcrumb-item"><a href="index.html" class="link"><i class="mdi mdi-home-outline fs-4"></i></a></li>
-                              <li class="breadcrumb-item active" aria-current="page">{{ $title }}</li>
+                                <li class="breadcrumb-item"><a href="{{ route('home_index') }}" class="link"><i
+                                            class="mdi mdi-home-outline fs-4"></i></a></li>
+                                <li class="breadcrumb-item active" aria-current="page">{{ $title }}</li>
                             </ol>
-                          </nav>
-                        <h1 class="mb-0 fw-bold">{{ $title }}</h1> 
+                        </nav>
+                        <h1 class="mb-0 fw-bold">{{ $title }}</h1>
                     </div>
                     <div class="col-6">
                         <div class="text-end upgrade-btn">
@@ -221,8 +236,7 @@
             <!-- footer -->
             <!-- ============================================================== -->
             <footer class="footer text-center">
-                Designed and Developed by <a
-                    href="https://gokisoft.com">GYMSTORE</a>.
+                Designed and Developed by <a href="https://gokisoft.com">GYMSTORE</a>.
             </footer>
             <!-- ============================================================== -->
             <!-- End footer -->

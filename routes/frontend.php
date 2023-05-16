@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\FrontendController;
+use Illuminate\Support\Facades\Route;
 
 Route::controller(FrontendController::class)
-    ->group(function() {
+    ->group(function () {
         Route::get('/', 'index')->name('home_index');
         Route::get('/san-pham', 'showProducts')->name('frontend.products');
         Route::get('/tin-tuc', 'showNews')->name('frontend.news');
@@ -17,5 +17,6 @@ Route::controller(FrontendController::class)
         Route::get('/{id}-{href_param}.phtml', 'showDetail')->name('frontend.detail');
         // http://127.0.0.1:8000/1-gioi-thieu-doanh-nghiep.html => SEO google, bing, yahoo
         Route::get('/{id}-{href_param}.html', 'showPost')->name('frontend.post');
-        Route::get('tim-kiem','search')->name('frontend.search');
-});
+        Route::get('tim-kiem', 'search')->name('frontend.search');
+        Route::get('/danh-muc-san-pham/{slug?}', 'category')->name('frontend.category');
+    });

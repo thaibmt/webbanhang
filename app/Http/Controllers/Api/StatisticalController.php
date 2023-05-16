@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\BaseController as BaseController;
+use App\Http\Resources\OrderResource;
 use App\Models\Orders;
 use App\Models\Product;
 
@@ -67,5 +68,15 @@ class StatisticalController extends BaseController
         };
 
         return $this->sendResponse($data, 'Total order retrieved successfully.');
+    }
+
+    // lấy số đơn hàng mới
+    public function getNewOrder($limit = 5)
+    {
+        if (!is_numeric($limit) || $limit <= 0) {
+            $limit = 5;
+        }
+        $orders = Orders::whereStatus(false)->limit($limit)->get();
+        return $this->sendResponse(OrderResource::collection($orders), 'New orders retrieved successfully.');
     }
 }

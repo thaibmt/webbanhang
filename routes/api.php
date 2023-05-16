@@ -59,6 +59,7 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
         Route::get('/total-order', 'totalOrder');
         Route::get('/total-product', 'totalProduct');
         route::get('order/{status}', 'getOrder'); // o:new, 1: approved, 2: cancelled
+        route::get('order/{limit}/new', 'getNewOrder');
     });
     // order
     Route::controller(OrderController::class)->prefix('orders')->group(function () {
