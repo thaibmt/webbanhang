@@ -294,7 +294,6 @@ class FrontendController extends Controller
                 'note' => $request->note,
             ],
         ];
-        return view('mail.order', compact('data'));
         SendEmail::dispatch($data)->delay(now()->addMinute(1));
         setcookie("cart", '', time(), '/');
         return redirect()->route('home_index')->withToastSuccess('Thanh toán thành công.');
